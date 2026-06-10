@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
+import {routes} from '../Constants/routes'
 
 export class CartPage {
   readonly page: Page;
@@ -28,11 +29,11 @@ export class CartPage {
 
   async continueShopping(): Promise<void> {
     await this.continueShoppingButton.click();
-    await expect(this.page).toHaveURL(/inventory/);
+    await expect(this.page).toHaveURL(routes.Product);
   }
 
   async checkout(): Promise<void> {
     await this.checkoutButton.click();
-    await expect(this.page).toHaveURL(/checkout-step-one/);
+    await expect(this.page).toHaveURL(routes.checkout);
   }
 }
