@@ -1,4 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
+import {routes} from '../Constants/routes'
+import {errorMsg} from '../Constants/errorMsg'
 
 export class CheckoutPage {
   readonly page: Page;
@@ -37,10 +39,10 @@ export class CheckoutPage {
 
   async finishOrder(): Promise<void> {
     await this.finishButton.click();
-    await expect(this.page).toHaveURL(/checkout-complete/);
+    await expect(this.page).toHaveURL(routes.checkoutComplete);
   }
 
   async verifyOrderConfirmation(): Promise<void> {
-    await expect(this.confirmationHeader).toContainText('Thank you for your order');
+    await expect(this.confirmationHeader).toContainText(errorMsg.OrderSuccess);
   }
 }
