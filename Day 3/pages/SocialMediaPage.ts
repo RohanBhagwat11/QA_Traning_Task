@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'; 
+import {routes} from '../Constants/routes'
 
 export class SocialMediaPage{
     readonly page: Page
@@ -9,7 +10,7 @@ export class SocialMediaPage{
     }
 
     async gotoTwitter():Promise<void>{
-        await this.page.goto("https://x.com/saucelabs")
+        await this.page.goto(routes.Twitter)
     }
 
     async verifyTwitterPage(): Promise<void>{
@@ -18,7 +19,7 @@ export class SocialMediaPage{
        }
 
      async gotoFacebook():Promise<void>{
-        await this.page.goto("https://www.facebook.com/saucelabs")
+        await this.page.goto(routes.Facebook)
     }
 
     async verifyFacebookPage(): Promise<void>{
@@ -30,7 +31,7 @@ export class SocialMediaPage{
     
 
      async gotoLinkedin():Promise<void>{
-        await this.page.goto("https://www.linkedin.com/company/sauce-labs/")
+        await this.page.goto(routes.Linkedin)
     }
 
     async verifyLinkedinPage(): Promise<void>{
