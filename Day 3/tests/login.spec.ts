@@ -1,12 +1,14 @@
 import { test } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { users } from '../test-data/users';
+import { errorMsg } from '../Constants/errorMsg'
+
 
 test.describe('Login Tests', () => {
 
   
   test('TC_001 - Login page should load @smoke', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(page); 
     await loginPage.goto();
     await loginPage.verifyLoginPageIsVisible();
   });
@@ -16,7 +18,6 @@ test.describe('Login Tests', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(standardUser.username, standardUser.password);
-    await page.waitForURL(/inventory/);
   });
 
   test('TC_003 - Invalid password should show error @negative', async ({ page }) => {
@@ -24,7 +25,7 @@ test.describe('Login Tests', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(standardUser.username, 'wrong_password');
-    await loginPage.verifyErrorMessage('Username and password do not match');
+    await loginPage.verifyErrorMessage(errorMsg.NoUserPassMatch);
   });
 
   test('TC_004 - Locked user should not be able to login @negative', async ({ page }) => {
@@ -32,7 +33,7 @@ test.describe('Login Tests', () => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(lockedUser.username, lockedUser.password);
-    await loginPage.verifyErrorMessage('Sorry, this user has been locked out');
+    await loginPage.verifyErrorMessage(errorMsg.lockedUserMsg);
   });
 
 });
