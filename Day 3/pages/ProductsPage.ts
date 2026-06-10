@@ -1,11 +1,12 @@
 import { Page, Locator, expect } from '@playwright/test';
+import {routes} from '../Constants/routes'
 
 export class ProductsPage {
   readonly page: Page;
   readonly inventoryList: Locator;
   readonly cartBadge: Locator;
   readonly cartLink: Locator;
- 
+
 
   constructor(page: Page) {
     this.page = page;
@@ -15,15 +16,12 @@ export class ProductsPage {
   }
 
   async verifyProductsPageIsVisible(): Promise<void> {
-    await expect(this.page).toHaveURL(/inventory/);
+    await expect(this.page).toHaveURL(routes.Product);
     await expect(this.inventoryList).toHaveCount(6);
   }
 
   async addProductToCart(productName: string): Promise<void> {
-    await this.inventoryList
-      .filter({ hasText: productName })
-      .getByRole('button', { name: 'Add to cart' })
-      .click();
+    await this.inventoryList.filter({ hasText: productName }).getByRole('button', { name: 'Add to cart' }).click();
   }
 
   async removeProductFromCart(productName: string): Promise<void> {
@@ -35,7 +33,7 @@ export class ProductsPage {
 
   async goToCart(): Promise<void> {
     await this.cartLink.click();
-    await expect(this.page).toHaveURL(/cart/);
+    await expect(this.page).toHaveURL(routes.cart);
   }
 
   async verifyCartCount(expectedCount: number): Promise<void> {
