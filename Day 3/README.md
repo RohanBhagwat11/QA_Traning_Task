@@ -39,17 +39,18 @@ This project contains automated test cases developed using **Playwright** with *
 
 10. Checkout with valid details should reach the overview page.
 11. Checkout with missing first name should show a validation error.
-12. Checkout with missing postal code should show a validation error.
+12. Checkout with missing last name should show a validation error.
+13. Checkout with missing postal code should show a validation error.
 
 ### Logout Module
 
-13. User should be able to log out successfully.
+14. User should be able to log out successfully.
 
 ### Social Media Navigation
 
-14. User should be able to navigate to the company Twitter page.
-15. User should be able to navigate to the company Facebook page.
-16. User should be able to navigate to the company LinkedIn page.
+15. User should be able to navigate to the company Twitter page.
+16. User should be able to navigate to the company Facebook page.
+17. User should be able to navigate to the company LinkedIn page.
 
 ---
 
