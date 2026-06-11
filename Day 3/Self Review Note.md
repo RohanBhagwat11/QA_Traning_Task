@@ -1,5 +1,17 @@
-During this QA training, I learned the basics of web automation using Playwright with TypeScript. I worked on the SauceDemo website and automated several key functionalities, including Login, Products, Cart, Checkout, Logout, and Social Media navigation.
-
-Before starting automation, I created manual test cases for the website to better understand the application flow and testing requirements. While developing the automation scripts, I gained hands-on experience with different types of Playwright locators and learned how to use them effectively in test scenarios. Most of my Day 1 and Day 2 tasks focused on understanding these concepts and implementing them in practice.
-
-One of the more challenging topics for me was understanding and implementing the Page Object Model (POM) design pattern. Although I successfully completed the assigned tasks, I still feel that I need more practice to become fully confident in creating automation frameworks and writing scripts for completely new websites. With additional hands-on experience, I believe I will develop a stronger understanding of Playwright automation and framework design.
+# Self-Review – QA Automation Training
+## Accomplishments
+- Learned the basics of Playwright with TypeScript for web automation.
+- Automated key SauceDemo functionalities, including Login, Products, Cart, Checkout, Logout, and Social Media navigation.
+- Created manual test cases before automation to understand application flow and testing requirements.
+- Gained hands-on experience with Playwright locators and test script development.
+## Challenges
+- Understanding and implementing the Page Object Model (POM) was challenging.
+- Need more practice in building automation frameworks and automating completely new websites independently.
+## Goals
+- Strengthen POM and framework design knowledge.
+- Improve confidence in creating automation scripts for new applications.
+- Learn advanced Playwright concepts and best practices.
+## Future Plans
+- Practice automation on different web applications.
+- Build independent automation projects to improve hands-on experience.
+- Continue enhancing framework development and Playwright automation skills.
