@@ -1,5 +1,5 @@
-import { Page, Locator, expect } from '@playwright/test';
-import {routes} from '../Constants/routes'
+import { Page, Locator, expect } from "@playwright/test";
+import { routes } from "../Constants/routes";
 
 export class CartPage {
   readonly page: Page;
@@ -9,21 +9,25 @@ export class CartPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.cartItems = page.locator('.cart_item');
+    this.cartItems = page.locator(".cart_item");
     this.checkoutButton = page.locator('[data-test="checkout"]');
-    this.continueShoppingButton = page.locator('[data-test="continue-shopping"]');
+    this.continueShoppingButton = page.locator(
+      '[data-test="continue-shopping"]',
+    );
   }
 
   async verifyProductInCart(productName: string): Promise<void> {
     await expect(
-      this.page.locator('[data-test="inventory-item-name"]', { hasText: productName })
+      this.page.locator('[data-test="inventory-item-name"]', {
+        hasText: productName,
+      }),
     ).toBeVisible();
   }
 
   async removeProduct(productName: string): Promise<void> {
     await this.cartItems
       .filter({ hasText: productName })
-      .getByRole('button', { name: 'Remove' })
+      .getByRole("button", { name: "Remove" })
       .click();
   }
 
