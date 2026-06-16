@@ -1,5 +1,6 @@
-import { Page, Locator, expect } from '@playwright/test';
-import {routes} from '../Constants/routes'
+import { Page, Locator, expect } from "@playwright/test";
+import { routes } from "../Constants/routes";
+import {products} from '../test-data/product'
 
 export class ProductsPage {
   readonly page: Page;
@@ -7,10 +8,9 @@ export class ProductsPage {
   readonly cartBadge: Locator;
   readonly cartLink: Locator;
 
-
   constructor(page: Page) {
     this.page = page;
-    this.inventoryList = page.locator('.inventory_item');
+    this.inventoryList = page.locator(".inventory_item");
     this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
     this.cartLink = page.locator('[data-test="shopping-cart-link"]');
   }
@@ -20,14 +20,22 @@ export class ProductsPage {
     await expect(this.inventoryList).toHaveCount(6);
   }
 
-  async addProductToCart(productName: string): Promise<void> {
-    await this.inventoryList.filter({ hasText: productName }).getByRole('button', { name: 'Add to cart' }).click();
+  // async addProductToCart(productName: string): Promise<void> {
+  //   await this.inventoryList
+  //     .filter({ hasText: productName })
+  //     .getByRole("button", { name: "Add to cart" })
+  //     .click();
+  // }
+
+   async addProductToCart(productName: string): Promise<void> {
+    const productId = productName.toLowerCase().replaceAll(" ", "-");
+    await this.page.locator(`[data-test="add-to-cart-${productId}"]`).click();
   }
 
   async removeProductFromCart(productName: string): Promise<void> {
     await this.inventoryList
       .filter({ hasText: productName })
-      .getByRole('button', { name: 'Remove' })
+      .getByRole("button", { name: "Remove" })
       .click();
   }
 
@@ -43,8 +51,4 @@ export class ProductsPage {
       await expect(this.cartBadge).toHaveText(String(expectedCount));
     }
   }
-
-
-
-
 }
