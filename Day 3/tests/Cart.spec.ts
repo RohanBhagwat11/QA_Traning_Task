@@ -1,20 +1,30 @@
-import { test } from '@playwright/test';
-import { ProductsPage } from '../pages/ProductsPage';
-import { CartPage } from '../pages/CartPage';
-import { products } from '../test-data/product';
-import { loginAsStandardUser } from '../utils/testHelpers';
-
-test.describe('Cart Tests', () => {
+import { test } from "@playwright/test";
+import { ProductsPage } from "../pages/ProductsPage";
+import { CartPage } from "../pages/CartPage";
+import { products } from "../test-data/product";
+import { loginAsStandardUser } from "../utils/testHelpers";
 
 
-  test('TC_006 - Add one product to cart @regression', async ({ page }) => {
+test.describe("Cart Tests", () => {
+/*  test("TC_006 - Add one product to cart @regression", async ({ page }) => {
     await loginAsStandardUser(page);
     const productsPage = new ProductsPage(page);
     await productsPage.addProductToCart(products[0].name);
     await productsPage.verifyCartCount(1);
   });
+  */
 
-  test('TC_007 - Remove product from cart @regression', async ({ page }) => {
+   test(`Add Product- ${products[0].name}`, async ({ page }) => {
+    await loginAsStandardUser(page)
+
+    const productPage = new ProductsPage(page)
+
+    await productPage.addProductToCart(products[0].name);
+    
+    await productPage.verifyCartCount(products[0].expectedCartCount);
+  });
+
+  test("TC_007 - Remove product from cart @regression", async ({ page }) => {
     await loginAsStandardUser(page);
     const productsPage = new ProductsPage(page);
     await productsPage.addProductToCart(products[0].name);
@@ -23,7 +33,9 @@ test.describe('Cart Tests', () => {
     await productsPage.verifyCartCount(0);
   });
 
-  test('TC_008 - Add multiple products to cart @cart @regression', async ({ page }) => {
+  test("TC_008 - Add multiple products to cart @cart @regression", async ({
+    page,
+  }) => {
     await loginAsStandardUser(page);
     const productsPage = new ProductsPage(page);
 
@@ -34,7 +46,9 @@ test.describe('Cart Tests', () => {
     await productsPage.verifyCartCount(products.length);
   });
 
-  test('TC_009 - Cart page should show selected products @cart @regression', async ({ page }) => {
+  test("TC_009 - Cart page should show selected products @cart @regression", async ({
+    page,
+  }) => {
     await loginAsStandardUser(page);
     const productsPage = new ProductsPage(page);
 
@@ -49,5 +63,4 @@ test.describe('Cart Tests', () => {
       await cartPage.verifyProductInCart(product.name);
     }
   });
-
 });
