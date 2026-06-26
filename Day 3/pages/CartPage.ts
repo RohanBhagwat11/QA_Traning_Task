@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { routes } from "../Constants/routes";
+import { products } from "../test-data/product";
 
 export class CartPage {
   readonly page: Page;
@@ -39,5 +40,11 @@ export class CartPage {
   async checkout(): Promise<void> {
     await this.checkoutButton.click();
     await expect(this.page).toHaveURL(routes.checkout);
+  }
+
+  async verifyMultipleproductadded(): Promise<void> {
+    for (const product of products) {
+      await this.verifyProductInCart(product.name);
+    }
   }
 }
