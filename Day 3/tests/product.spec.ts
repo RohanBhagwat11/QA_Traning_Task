@@ -1,15 +1,17 @@
-import { test } from '@playwright/test';
-import { ProductsPage } from '../pages/ProductsPage';
-import {products} from '../test-data/product'
-import { loginAsStandardUser } from '../utils/testHelpers';
+import { test } from "@playwright/test";
+import { ProductsPage } from "../pages/ProductsPage";
+import { products } from "../test-data/product";
+import { loginAsStandardUser } from "../utils/testHelpers";
 
-test.describe('Product Tests', () => {
+let productPage: ProductsPage;
 
-  test('TC_005 - Product list should be visible after login @smoke', async ({ page }) => {
+test.describe("Product Tests", () => {
+  test.beforeEach(async ({ page }) => {
+    productPage = new ProductsPage(page);
     await loginAsStandardUser(page);
-    const productsPage = new ProductsPage(page);
-    await productsPage.verifyProductsPageIsVisible();
   });
 
-
+  test("TC_005 - Product list should be visible after login @smoke", async () => {
+    await productPage.verifyProductsPageIsVisible();
+  });
 });
