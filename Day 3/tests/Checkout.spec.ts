@@ -1,55 +1,56 @@
-import { test } from '@playwright/test';
-import { ProductsPage } from '../pages/ProductsPage';
-import { CartPage } from '../pages/CartPage';
-import { CheckoutPage } from '../pages/CheckoutPage';
-import { products } from '../test-data/product';
-import { loginAsStandardUser } from '../utils/testHelpers';
-import { userdata } from '../test-data/userdata'
-import { errorMsg} from '../Constants/errorMsg'
+import { test } from "@playwright/test";
+import { ProductsPage } from "../pages/ProductsPage";
+import { CartPage } from "../pages/CartPage";
+import { CheckoutPage } from "../pages/CheckoutPage";
+import { loginAsStandardUser } from "../utils/testHelpers";
 
-test.describe('Checkout Tests', () => {
+let productPage: ProductsPage;
+let cartPage: CartPage;
+let checkoutPage: CheckoutPage;
 
-  // Reusable helper to reach the checkout form
-  async function proceedToCheckoutForm(page: any): Promise<void> { 
+test.describe("Checkout Tests", () => {
+
+  test.beforeEach(async ({ page }) => {
+    productPage = new ProductsPage(page);
+    cartPage = new CartPage(page);
+    checkoutPage = new CheckoutPage(page);
+
     await loginAsStandardUser(page);
-    const productsPage = new ProductsPage(page); 
-    await productsPage.addProductToCart(products[0].name);
-    await productsPage.goToCart();
-    const cartPage = new CartPage(page);
+    await productPage.addMultipleProduct();
+    await productPage.goToCart();
     await cartPage.checkout();
-  }
+  });
 
-  test('TC_010 - Checkout with valid details should reach overview page @checkout @regression', async ({ page }) => {
-    await proceedToCheckoutForm(page);
-    const checkoutPage = new CheckoutPage(page);
-    await checkoutPage.fillCheckoutDetails(userdata[0].firstname, userdata[0].lastname, userdata[0].postalcode);
+  test("TC_010 - Checkout with valid details should reach overview page @checkout @regression", async ({
+    page,
+  }) => {
+    await checkoutPage.fillValidCheckoutDetails();
     await checkoutPage.continueCheckout();
     await checkoutPage.finishOrder();
     await checkoutPage.verifyOrderConfirmation();
   });
 
-  test('TC_011 - Checkout with missing first name should show validation error @checkout @negative', async ({ page }) => {
-    await proceedToCheckoutForm(page);
-    const checkoutPage = new CheckoutPage(page);
-    await checkoutPage.fillCheckoutDetails('', userdata[0].lastname, userdata[0].postalcode);
+  test("TC_011 - Checkout with missing first name should show validation error @checkout @negative", async ({
+    page,
+  }) => {
+    await checkoutPage.fillWithMissingFirstName();
     await checkoutPage.continueCheckout();
-    await checkoutPage.verifyValidationMessage(errorMsg.firstNameRequired);
+    await checkoutPage.verifyMissingFirstNameMessage();
   });
 
-  test('TC_012 - Checkout with missing last name should show validation error @checkout @negative', async ({ page }) => {
-    await proceedToCheckoutForm(page);
-    const checkoutPage = new CheckoutPage(page);
-    await checkoutPage.fillCheckoutDetails(userdata[0].firstname, '', userdata[0].postalcode);
+  test("TC_012 - Checkout with missing last name should show validation error @checkout @negative", async ({
+    page,
+  }) => {
+    await checkoutPage.fillWithMissingLastName();
     await checkoutPage.continueCheckout();
-    await checkoutPage.verifyValidationMessage(errorMsg.lastNameRequired);
+    await checkoutPage.verifyMissingLastNameMessage();
   });
 
-  test('TC_013 - Checkout with missing postal code should show validation error @checkout @negative', async ({ page }) => {
-    await proceedToCheckoutForm(page);
-    const checkoutPage = new CheckoutPage(page);
-    await checkoutPage.fillCheckoutDetails(userdata[1].firstname, userdata[1].lastname, '');
+  test("TC_013 - Checkout with missing postal code should show validation error @checkout @negative", async ({
+    page,
+  }) => {
+    await checkoutPage.fillWithMissingPostalcode();
     await checkoutPage.continueCheckout();
-    await checkoutPage.verifyValidationMessage(errorMsg.postalCodeRequired);
+    await checkoutPage.verifyMissingPostalCodeMessage();
   });
-
 });
