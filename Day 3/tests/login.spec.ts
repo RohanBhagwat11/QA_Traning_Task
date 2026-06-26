@@ -1,39 +1,31 @@
-import { test } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { users } from '../test-data/users';
-import { errorMsg } from '../Constants/errorMsg'
 
+import { test } from "@playwright/test";
+import { LoginPage } from "../pages/LoginPage";
 
-test.describe('Login Tests', () => {
+let loginPage: LoginPage;
 
-  
-  test('TC_001 - Login page should load @smoke', async ({ page }) => {
-    const loginPage = new LoginPage(page); 
+test.describe("Login - Automation Testing", () => {
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
     await loginPage.goto();
+  });
+
+  test("TC_001 - Login page elements are visible @smoke", async () => {
     await loginPage.verifyLoginPageIsVisible();
   });
 
-  test('TC_002 - Valid user should be able to login @smoke', async ({ page }) => {
-    const standardUser = users.find(u => u.type === 'standard')!;
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.login(standardUser.username, standardUser.password);
+  test("TC_002 - Valid login navigates to products page @smoke", async () => {
+    await loginPage.loginAsStandardUser();
+    await loginPage.verifySuccessfulLogin();
   });
 
-  test('TC_003 - Invalid password should show error @negative', async ({ page }) => {
-    const standardUser = users.find(u => u.type === 'standard')!;
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.login(standardUser.username, 'wrong_password');
-    await loginPage.verifyErrorMessage(errorMsg.NoUserPassMatch);
+  test("TC_003 - Locked user sees error @negative", async () => {
+    await loginPage.loginAsLockedUser();
+    await loginPage.verifyLockedUserError();
   });
 
-  test('TC_004 - Locked user should not be able to login @negative', async ({ page }) => {
-    const lockedUser = users.find(u => u.type === 'locked')!;
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.login(lockedUser.username, lockedUser.password);
-    await loginPage.verifyErrorMessage(errorMsg.lockedUserMsg);
+  test("TC_005 - Invalid credentials shows error @negative", async () => {
+    await loginPage.loginWithInvalidCredentials();
+    await loginPage.verifyInvalidCredentialsError();
   });
-
 });
