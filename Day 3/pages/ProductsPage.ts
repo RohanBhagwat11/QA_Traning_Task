@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { routes } from "../Constants/routes";
-import {products} from '../test-data/product'
+import { products } from "../test-data/product";
 
 export class ProductsPage {
   readonly page: Page;
@@ -20,16 +20,22 @@ export class ProductsPage {
     await expect(this.inventoryList).toHaveCount(6);
   }
 
-  // async addProductToCart(productName: string): Promise<void> {
-  //   await this.inventoryList
-  //     .filter({ hasText: productName })
-  //     .getByRole("button", { name: "Add to cart" })
-  //     .click();
-  // }
-
-   async addProductToCart(productName: string): Promise<void> {
+  async addProductToCart(productName: string): Promise<void> {
     const productId = productName.toLowerCase().replaceAll(" ", "-");
     await this.page.locator(`[data-test="add-to-cart-${productId}"]`).click();
+  }
+
+  async addSingleProduct(): Promise<void> {
+    await this.addProductToCart(products[0].name);
+    await this.verifyCartCount(products[0].expectedCartCount);
+  }
+
+  async addMultipleProduct(): Promise<void> {
+    for (const product of products) {
+      await this.addProductToCart(product.name);
+    }
+
+    await this.verifyCartCount(products.length);
   }
 
   async removeProductFromCart(productName: string): Promise<void> {
@@ -37,6 +43,11 @@ export class ProductsPage {
       .filter({ hasText: productName })
       .getByRole("button", { name: "Remove" })
       .click();
+  }
+
+  async removeSingleProduct(): Promise<void> {
+    await this.removeProductFromCart(products[0].name);
+    await this.verifyCartCount(0);
   }
 
   async goToCart(): Promise<void> {
