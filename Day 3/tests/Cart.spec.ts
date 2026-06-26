@@ -1,7 +1,6 @@
 import { test } from "@playwright/test";
 import { ProductsPage } from "../pages/ProductsPage";
 import { CartPage } from "../pages/CartPage";
-import { products } from "../test-data/product";
 import { loginAsStandardUser } from "../utils/testHelpers";
 
 let productPage: ProductsPage;
